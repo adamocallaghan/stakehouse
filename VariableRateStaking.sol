@@ -48,7 +48,12 @@ contract VariableRateStaking is ERC20 {
         require(staked[msg.sender] > 0, "Staked is <= 0");
         // CALCULATE REWARDS...
         uint256 secondsStaked = block.timestamp - stakedFromTimestamp[msg.sender];
-        uint256 rewards = staked[msg.sender] * secondsStaked / 3.154e7;
+        uint256 rewards;
+        if(secondsStaked <= 2.628e6) { // Less than 1 month staked
+            rewards = staked[msg.sender] * secondsStaked / 2.628e6;
+        } else { // else
+            rewards = staked[msg.sender] * secondsStaked / 3.154e7;
+        }
 
         _mint(msg.sender,rewards);
 
