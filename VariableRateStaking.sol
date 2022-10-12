@@ -3,13 +3,14 @@
 pragma solidity ^0.8.15;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 /*
 * @title Variable Rate Staking Contract
 * @author Adam O'Callaghan
 */
 
-contract VariableRateStaking is ERC20 {
+contract VariableRateStaking is ERC20, ReentrancyGuard {
 
     mapping(address => uint256) public staked;
     mapping(address => uint256) public stakedFromTimestamp;
@@ -43,7 +44,7 @@ contract VariableRateStaking is ERC20 {
         _transfer(address(this), msg.sender, amount);
     }
 
-    function claim() public {
+    function claim() public nonReentrant() {
         // REQUIRES...
         require(staked[msg.sender] > 0, "Staked is <= 0");
         // CALCULATE REWARDS...
