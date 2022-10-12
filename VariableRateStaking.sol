@@ -3,19 +3,18 @@
 pragma solidity ^0.8.15;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 /*
-* @title Fixed Rate Staking Contract
+* @title Variable Rate Staking Contract
 * @author Adam O'Callaghan
 */
 
-contract FixedRateStaking is ERC20, ReentrancyGuard {
+contract VariableRateStaking is ERC20 {
 
     mapping(address => uint256) public staked;
     mapping(address => uint256) public stakedFromTimestamp;
 
-    constructor() ERC20("RIBEYE TOKEN", "RBYE") {
+    constructor() ERC20("SIRLOIN TOKEN", "SRLN") {
         _mint(msg.sender,100000000000000000000000000);
     }
 
@@ -44,7 +43,7 @@ contract FixedRateStaking is ERC20, ReentrancyGuard {
         _transfer(address(this), msg.sender, amount);
     }
 
-    function claim() public nonReentrant() {
+    function claim() public {
         // REQUIRES...
         require(staked[msg.sender] > 0, "Staked is <= 0");
         // CALCULATE REWARDS...
